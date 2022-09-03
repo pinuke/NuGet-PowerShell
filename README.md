@@ -9,7 +9,7 @@ Only has 2: `semver` and `nuget.frameworks`. To update them, you can simply run:
   foreach{ $_ | Get-NuGet-Dlls -Path "[root of main.ps1]\dependencies" -y }
 ```
 
-**NOTE:** *They still have to exist, before running the cmdlet*, so either use mine (included in dependencies folder), or manually download them yourself to that folder
+**NOTE:** *They still have to exist in `dependencies`, before running the cmdlet*, so either use mine (included with repo), or manually download them yourself
 
 ## Usage:
 
