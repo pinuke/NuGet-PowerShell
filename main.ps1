@@ -309,6 +309,16 @@ function Get-NuGet-Dlls {
             $SubOut = API @Request
 
             if( $SubOut ){
+
+                $SubOut.ForEach({
+                    
+                    if( -not( $_.parent ) ){
+                        
+                        $_.parent = $PackageName
+                
+                    }
+                
+                })
         
                 if( $SubOut.toString() -eq "System.Collections.Hashtable" ){
             
