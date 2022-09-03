@@ -1,4 +1,4 @@
-﻿function Get-Web-JSON( $URL ){
+function Get-Web-JSON( $URL ){
 
     ConvertFrom-Json (Invoke-WebRequest $URL)
 
@@ -27,7 +27,8 @@ function Get-NuGet-Dlls {
         [string] $Range, #version range
         [string[]] $Group = @(), #dependency grouping. used mainly for packages that have multiple .net versions
 
-        [switch] $y #use the latest stable release for all packages
+        [switch] $y, #use the latest stable release for all packages
+        [switch] $n #use the latest stable release for all packages
     )
 
     $Exclude = New-Object System.Collections.Generic.List[System.Object]
@@ -246,14 +247,6 @@ function Get-NuGet-Dlls {
 
         $Choice = $Packages[ $sel.package ]
 
-        if( $n ){
-
-            $Output.Add( @{ "name" = $PackageName; "dl" = $Choice.URL.Download; "v" = $Choice.Version.toString() } )
-
-            return $Output
-
-        }
-
         $Details = Get-Web-JSON $Choice.URL.API
 
         $Choice.Frameworks = $Details.dependencyGroups.forEach({
@@ -300,6 +293,8 @@ function Get-NuGet-Dlls {
 
         $Output.Add( @{ "name" = $PackageName; "dl" = $Choice.URL.download; "v" = $Choice.Version.toString(); "framework" = $Preselected[-1] } )
 
+        if( $n ){ return $Output }
+
         $Choice.Frameworks[ $Preselected[-1] ].forEach({
 
             $Request = @{
@@ -336,6 +331,7 @@ function Get-NuGet-Dlls {
     if( $Range ){ $Request.Range = $Range }
     if( $Group ){ $Request.Group = $Group }
     if( $y ){ $Request.y = $y }
+    if( $n ){ $Request.n = $n }
 
     $Response = @{}
 
