@@ -1,6 +1,16 @@
 # NuGet-PowerShell
 A simple interactive utility for downloading .dlls and their dependency .dlls from NuGet
 
+#### Dependencies:
+
+Only has 2: `semver` and `nuget.frameworks`. To update them, you can simply run:
+```
+@( "semver", "nuget.frameworks" ) |
+  foreach{ $_ | Get-NuGet-Dlls -Path "[root of main.ps1]\dependencies" -y }
+```
+
+**NOTE:** *They still have to exist, before running the cmdlet*, so either use mine (included in dependencies folder), or manually download them yourself to that folder
+
 ## Usage:
 
 `Get-NuGet-Dlls [parameters - see below]`
